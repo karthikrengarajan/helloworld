@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  tasks:
+  - name: NGINX | Installing NGINX repo rpm
+    yum:
+      name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+    become: true
+    become_user: root
+
+  - name: NGINX | Installing NGINX
+    yum:
+      name: nginx
+      state: latest
+    become: true
+    become_user: root
+
+  - name: NGINX | Starting NGINX
+    service:
+      name: nginx
+      state: started
+    become: true
+    become_user: root
