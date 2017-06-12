@@ -1,6 +1,23 @@
+pipeline {
+    agenty any
 
+    stages {
+      stage ('Code Checkout') {
+        steps {
+          checkout scm
+        }
+      }
 
-node {
-    stage "Checkout code"
-      sh "ls -ltr"
+      stage ('Build') {
+        steps {
+          sh 'docker build -t helloworld:latest -f helloworld/Dockerfile .'
+        }
+      }
+
+      stage ('Deploy') {
+        steps {
+          sh 'docker run helloworld:latest -p 3000:3000'
+        }
+      }
+    }
 }
