@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-   config.vm.network "forwarded_port", guest: 80, host: 8080
+   config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -75,11 +75,15 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-  config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "/vagrant/ansible/playbook.yml"
-    ansible.install_mode = "pip"
-    ansible.version = "2.2.1.0"
-    ansible.verbose = "true"
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "ansible/playbook.yml"
+  #   ansible.verbose = "true"
+  # end
+
+  config.vm.provision "docker" do |d|
+    d.pull_images "jenkins"
+    d.run "jenkins", args: "-p 8080:8080"
   end
+
 
 end
